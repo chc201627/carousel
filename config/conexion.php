@@ -1,14 +1,17 @@
 <?php
-$DB_HOST="localhost";//Servidor donde se encuentra alojada nuestra base de datos
-$DB_NAME= "carousel";// Nombre de la base de datos
-$DB_USER= "root";//Usuario de la base de datos
-$DB_PASS= "";//Contraseña del usuario de la base de datos
-	# conectare la base de datos
-    $con=@mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
-    if(!$con){
-        die("imposible conectarse: ".mysqli_error($con));
+function conectar() {
+    $serverName = "169.45.245.82,20446";
+    $connectionInfo = array( "Database"=>"carausel", "UID"=>"admindata", "PWD"=>"S13s42015");
+    $conn = sqlsrv_connect( $serverName, $connectionInfo);
+    if( $conn ) {
+        // echo "Conexión establecida.<br />";
+    }else{
+        echo "Conexión no se pudo establecer.<br />";
+        die( print_r( sqlsrv_errors(), true));
     }
-    if (@mysqli_connect_errno()) {
-        die("Connect failed: ".mysqli_connect_errno()." : ". mysqli_connect_error());
-    }
+
+    return $conn;
+}
+
+
 ?>

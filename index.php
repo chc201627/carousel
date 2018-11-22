@@ -2,6 +2,7 @@
 $title="Carousel Bootstrap 3 con PHP y MySQL";
 /* Llamar la Cadena de Conexion*/ 
 include ("config/conexion.php");
+$con=conectar();
 $active="active";
 ?>
 <!DOCTYPE html>
@@ -23,9 +24,17 @@ $active="active";
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-9">
 			<div id="carousel-example-captions" class="carousel slide" data-ride="carousel"> 
 				<?php
-					$sql_slider=mysqli_query($con,"select * from slider where estado=1 order by orden");
-					$nums_slides=mysqli_num_rows($sql_slider);
-				?>
+                    $sql = "select * from slider where estado=1 order by orden";
+                    $sql_slider = sqlsrv_query($con,$sql);
+//                    var_dump($sql_slider);
+                    if( $sql_slider === false) {
+                    die( print_r( sqlsrv_errors(), true) );
+                    }
+//					$sql_slider=mysqli_query($con,"select * from slider where estado=1 order by orden");
+//					$nums_slides=mysqli_num_row($sql_slider);
+                    $nums_slides = sqlsrv_num_rows($sql_slider);
+
+			?>
 					<ol class="carousel-indicators">
 						<?php 
 						for ($i=0; $i<$nums_slides; $i++){
@@ -41,7 +50,7 @@ $active="active";
 				<div class="carousel-inner" role="listbox"> 
 				<?php
 					$active="active";
-					while ($rw_slider=mysqli_fetch_array($sql_slider)){
+					while ($rw_slider=sqlsrv_fetch_array($sql_slider)){
 				?>
 						<div class="item <?php echo $active;?>"> 
 							<img data-src="holder.js/900x500/auto/#777:#777" alt="900x500" src="img/slider/<?php echo $rw_slider['url_image'];?>" data-holder-rendered="true"> 
